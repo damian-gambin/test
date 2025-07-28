@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd                       http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+   // Comment: Changset for upated 
+  <changeSet author="flexibility" id="{changeset_id}_{context}" context="{context}">
+    <comment>{comment}</comment>
+
+    <update tableName="PROPERTIES">
+      <column name="prop_value" value="{value}"/>
+      <where>application = 'ypf-business-manager' AND PROP_KEY = 'provider.gic.cashout.channels.list' </where>
+    </update>
+
+    <rollback>
+      <update tableName="PROPERTIES">
+        <column name="prop_value" value="YPF_APP,YPF_VEN,YPF_GAS"/>
+        <where>application = 'ypf-business-manager' AND PROP_KEY = 'provider.gic.cashout.channels.list' </where>
+      </update>
+      <update tableName="PROPERTIES">
+        <column name="prop_value" value="{'YPF_APP':'0001','YPF_VEN':'0002','YPF_GAS':'0003'}"/>
+        <where>application = 'ypf-business-manager' AND PROP_KEY = 'provider.gic.cashout.channels.codes' </where>
+      </update>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>
