@@ -1,2 +1,3 @@
 module: {module}
 action: {action}
+version: {version}
