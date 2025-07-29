@@ -8,6 +8,7 @@
 //    - {value} : property value to be inserted/updated
 //    - {prev_value} : previous value for rollback
 //  * If some params are not passed, they will be replaced with TODO strings
+//  * one databaseChangeLog for {module}
 //  * one changeset for operation
 //  * mandatory rollback
 <?xml version="1.0" encoding="UTF-8" ?>
