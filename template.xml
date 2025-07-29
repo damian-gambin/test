@@ -1,4 +1,13 @@
 // Context: 
+//  * Liquibase template for managing properties in a database
+//  * params required:
+//    - {version} : version of the changeset
+//    - {module} : module name (e.g., backoffice-manager)
+//    - {context} : context for the changeset (e.g., local)
+//    - {key} : property key to be inserted/updated/deleted
+//    - {value} : property value to be inserted/updated
+//    - {prev_value} : previous value for rollback
+//  * If some params are not passed, they will be replaced with TODO strings
 //  * one changeset for operation
 //  * mandatory rollback
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -39,7 +48,7 @@
         <rollback>
             <update tableName="PROPERTIES">
                 <column name="prop_value" value="{prev_value}"/>
-                <where> application = '{module}' AND PROP_KEY = '{key}'</where>
+                <where> application = '{module}' AND PROP_KEY = '{prev_key}'</where>
             </update>
         </rollback>
     </changeSet>
