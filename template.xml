@@ -1,15 +1,68 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd                       http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+// Context: 
+//  * one changeset for operation
+//  * mandatory rollback
+<?xml version="1.0" encoding="UTF-8" ?>
+  <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+  
+    // Comment: Changeset for INSERT operation on PROPERTIES table 
+    <changeSet author="flexibility" id="{version}_load_{module}-{context}" context="{context}">
+          <comment>
+              Load {module} for {context}
+          </comment>
+          <insert tableName="PROPERTIES">
+              <column name="application" value="{module}" />
+              <column name="profile" value="default" />
+              <column name="label" value="master" />
+              <column name="prop_key" value="{key}" />
+              <column name="prop_value" value="{value}" />
+          </insert>
 
-   // Comment: Changset for upated 
-  <changeSet author="flexibility" context="{context}">
-    <comment>{comment}</comment>
-    <operation>UPDATE_LOCO</operation>
-  </changeSet>
+          <rollback>
+              <delete tableName="PROPERTIES">
+                  <where> application = '{module}' AND PROP_KEY = '{key}' AND prop_value='{value}'</where>
+              </delete>           
+          </rollback>
+      </changeSet>
 
-   // Comment: Changset for insert
-  <changeSet author="flexibility" context="{context}">
-    <comment>{comment}</comment>
-    <operation>INSERT_LOCO</operation>
-  </changeSet>
+    // Comment: Changeset for UPDATE operation on PROPERTIES table 
+   <changeSet author="flexibility" id="{version}_load_{module}-{context}" context="{context}">
+        <comment>
+            Update properties {module} for {context}
+        </comment>
+     
+        <update tableName="PROPERTIES">
+            <column name="prop_value" value="{value}" />
+            <where> application = '{module}' AND PROP_KEY = '{key}'</where>
+        </update>
+
+        <rollback>
+            <update tableName="PROPERTIES">
+                <column name="prop_value" value="{prev_value}"/>
+                <where> application = '{module}' AND PROP_KEY = '{key}'</where>
+            </update>
+        </rollback>
+    </changeSet>
+
+     // Comment: Changeset for DELETE operation on PROPERTIES table 
+   <changeSet author="flexibility" id="{version}_load_{module}-{context}" context="{context}">
+        <comment>
+            Delete properties {module} for {context}
+        </comment>
+
+        <delete tableName="PROPERTIES">
+            <where> application = '{module}' AND PROP_KEY = '{key}' AND prop_value='{value}'</where>
+        </delete>
+        </update>
+
+        <rollback>
+            <insert tableName="PROPERTIES">
+              <column name="application" value="{module}" />
+              <column name="profile" value="default" />
+              <column name="label" value="master" />
+              <column name="prop_key" value="{key}" />
+              <column name="prop_value" value="{value}" />
+          </insert>
+        </rollback>
+    </changeSet>
 </databaseChangeLog>
